@@ -15,6 +15,7 @@ class Calculator
         
         switch ($operation) {
             case self::ADD:
+                $result = $a + $b;
                 break;
             default:
                 throw new \InvalidArgumentException("Operation not supported");

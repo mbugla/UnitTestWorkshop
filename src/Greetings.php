@@ -8,6 +8,6 @@ class Greetings
 {
     public function hello(string $name): string 
     {
-        return '';
+        return "Hello ".$name;
     }
 }

@@ -12,6 +12,8 @@ class Workshop
     private int $duration;
     private array $attendees = [];
     private UuidInterface $id;
+    private bool $isStarted = false;
+    private bool $isEnded = false;
 
     public function __construct(UuidInterface $uuid, string $name, int $duration)
     {
@@ -22,7 +24,11 @@ class Workshop
 
     public function addAttendee(Attendee $attendee)
     {
-        $this->attendees[] = $attendee;
+        if (count($this->attendees) === 10) {
+            throw new LimitReached();
+        }
+
+        $this->attendees[(string)$attendee->getId()] = $attendee;
     }
 
     /**
@@ -55,5 +61,36 @@ class Workshop
     public function getId(): UuidInterface
     {
         return $this->id;
+    }
+
+    public function start()
+    {
+        if ($this->isEnded) {
+            throw new WorkshopAlreadyEnded();
+        }
+        
+        if(count($this->attendees) === 0) {
+            throw new NoAttendees();
+        }
+        $this->isStarted = true;
+    }
+
+    public function isStarted(): bool
+    {
+        return $this->isStarted;
+    }
+
+    public function end()
+    {
+        $this->isStarted = false;
+        $this->isEnded = true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnded(): bool
+    {
+        return $this->isEnded;
     }
 }
