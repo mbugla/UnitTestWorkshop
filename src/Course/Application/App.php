@@ -29,6 +29,9 @@ class App
 
     public function createCourse(string $name): Course
     {
+        if (strlen($name) < 5) {
+            $name = str_pad($name, 5 , '*', STR_PAD_BOTH);
+        }
         $course = new Course(UuidV4::uuid4(), $name);
 
         $this->courseRepository->store($course);

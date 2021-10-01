@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Tests\Course\Application;
+namespace App\Tests\Unit\Course\Application;
 
 use App\Course\Application\App;
 use App\Course\Application\Service\WebService;
@@ -17,14 +17,13 @@ class AppTest extends TestCase
 {
     /**
      * @test
+     * @group Course
      */
     public function it_should_create_and_store_course()
     {
         //Mock
-//        $courseRepo = $this->createMock(CourseRepositoryInterface::class);
-//        $courseRepo->expects($this->once())->method('store')->with($this->isInstanceOf(Course::class));
-
-        $courseRepo = new InMemoryCourseRepository();
+        $courseRepo = $this->createMock(CourseRepositoryInterface::class);
+        $courseRepo->expects($this->once())->method('store')->with($this->isInstanceOf(Course::class));
 
         //Dummies
         $workshopRepo = $this->createStub(WorkshopRepositoryInterface::class);
@@ -36,6 +35,5 @@ class AppTest extends TestCase
         $course = $app->createCourse('Test Automation');
 
         self::assertInstanceOf(Course::class, $course);
-        self::assertSame("Test Automation", $courseRepo->find($course->getId())->getName());
     }
 }
